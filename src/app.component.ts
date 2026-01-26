@@ -94,26 +94,45 @@ export class AppComponent {
     if (!content) return;
 
     const pdf = new jsPDF('p', 'mm', 'a4');
-    const pageHeight = pdf.internal.pageSize.getHeight();
     const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
     
-    // Get all sections to print
-    const sections = Array.from(content.querySelectorAll('.animate-fade-in, .print-index-page'));
+    // Get all individual sections (each view is inside a div with id)
+    const indexPage = content.querySelector('.print-index-page');
+    const allSections: HTMLElement[] = [];
     
-    for (let i = 0; i < sections.length; i++) {
-      const section = sections[i] as HTMLElement;
+    // Add index page first
+    if (indexPage) {
+      allSections.push(indexPage as HTMLElement);
+    }
+    
+    // Add all detail sections (welcome, directions, checkin, wifi, rules, guide, contact)
+    const detailSections = content.querySelectorAll('[id]');
+    detailSections.forEach(section => {
+      if (section.id && section.id !== '') {
+        allSections.push(section as HTMLElement);
+      }
+    });
+    
+    console.log(`Generating PDF with ${allSections.length} sections...`);
+    
+    for (let i = 0; i < allSections.length; i++) {
+      const section = allSections[i] as HTMLElement;
       
       try {
-        // Capture section as canvas
+        console.log(`Capturing section ${i + 1}/${allSections.length}: ${section.id || 'index'}`);
+        
+        // Capture section as canvas with better quality
         const canvas = await html2canvas(section, {
-          scale: 2,
+          scale: 1.5,
           useCORS: true,
           allowTaint: true,
           backgroundColor: '#ffffff',
           logging: false,
+          windowWidth: 800,
         });
 
-        const imgData = canvas.toDataURL('image/jpeg', 0.8);
+        const imgData = canvas.toDataURL('image/jpeg', 0.85);
         const imgWidth = pageWidth - 20; // 10mm margin on each side
         const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
@@ -122,13 +141,57 @@ export class AppComponent {
           pdf.addPage();
         }
 
-        // Add image to PDF
-        pdf.addImage(imgData, 'JPEG', 10, 10, imgWidth, imgHeight);
+        // If content is taller than one page, split it
+        if (imgHeight > pageHeight - 20) {
+          let position = 0;
+          let pageIndex = 0;
+          
+          while (position < canvas.height) {
+            if (pageIndex > 0) {
+              pdf.addPage();
+            }
+            
+            const pageCanvas = document.createElement('canvas');
+            pageCanvas.width = canvas.width;
+            pageCanvas.height = Math.min(
+              (pageHeight - 20) * canvas.width / imgWidth,
+              canvas.height - position
+            );
+            
+            const ctx = pageCanvas.getContext('2d');
+            if (ctx) {
+              ctx.drawImage(
+                canvas,
+                0,
+                position,
+                canvas.width,
+                pageCanvas.height,
+                0,
+                0,
+                pageCanvas.width,
+                pageCanvas.height
+              );
+              
+              const pageImgData = pageCanvas.toDataURL('image/jpeg', 0.85);
+              const pageImgHeight = (pageCanvas.height * imgWidth) / pageCanvas.width;
+              pdf.addImage(pageImgData, 'JPEG', 10, 10, imgWidth, pageImgHeight);
+            }
+            
+            position += pageCanvas.height;
+            pageIndex++;
+          }
+        } else {
+          // Fits in one page
+          pdf.addImage(imgData, 'JPEG', 10, 10, imgWidth, imgHeight);
+        }
+        
+        console.log(`✓ Section ${i + 1} captured`);
       } catch (error) {
         console.error(`Error capturing section ${i}:`, error);
       }
     }
 
+    console.log('PDF generation complete, downloading...');
     // Download the PDF
     pdf.save(`Helens-Guidebook-${this.lang()}.pdf`);
   }
