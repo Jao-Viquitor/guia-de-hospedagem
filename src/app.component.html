@@ -97,15 +97,21 @@
 
           <!-- Address Card with Navigation Options -->
           <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-            <div class="bg-primary-light p-4 border-b border-gray-100">
-              <h3 class="font-bold text-primary flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                  <circle cx="12" cy="10" r="3"></circle>
-                </svg>
-                {{ lang() === 'pt' ? 'Endereço' : 'Dirección' }}
-              </h3>
+            <!-- Apartment Image -->
+            <div class="h-48 overflow-hidden relative">
+              <img src="assets/apto.png" alt="Apartamento" class="w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+              <div class="absolute bottom-4 left-4 right-4">
+                <h3 class="font-bold text-white text-lg flex items-center gap-2 drop-shadow-lg">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                  </svg>
+                  {{ lang() === 'pt' ? 'Endereço' : 'Dirección' }}
+                </h3>
+              </div>
             </div>
+            
             <div class="p-4 space-y-3">
               <div>
                 <p class="font-bold text-gray-800">{{ content().sections.welcome.address.name }}</p>
@@ -313,15 +319,21 @@
 
           <!-- Address Card at Top -->
           <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-            <div class="bg-primary-light p-4 border-b border-gray-100">
-              <h3 class="font-bold text-primary flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                  <circle cx="12" cy="10" r="3"></circle>
-                </svg>
-                {{ lang() === 'pt' ? 'Endereço do Apartamento' : 'Dirección del Apartamento' }}
-              </h3>
+            <!-- Apartment Image -->
+            <div class="h-48 overflow-hidden relative">
+              <img src="assets/apto.png" alt="Apartamento" class="w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+              <div class="absolute bottom-4 left-4 right-4">
+                <h3 class="font-bold text-white text-lg flex items-center gap-2 drop-shadow-lg">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                  </svg>
+                  {{ lang() === 'pt' ? 'Endereço do Apartamento' : 'Dirección del Apartamento' }}
+                </h3>
+              </div>
             </div>
+            
             <div class="p-4 space-y-3">
               <div>
                 <p class="font-bold text-gray-800">{{ content().sections.welcome.address.name }}</p>
