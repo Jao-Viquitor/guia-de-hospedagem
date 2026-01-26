@@ -4,6 +4,7 @@ export const APP_CONTENT = {
     subtitle: "Bem-vindo!",
     menuInstruction: "Clique nos ícones",
     back: "Voltar",
+    exportPdf: "Exportar Guia (PDF)",
     menu: {
       welcome: "Boas-vindas",
       directions: "Acesso e Veículo",
@@ -120,6 +121,7 @@ export const APP_CONTENT = {
     subtitle: "¡Bienvenidos!",
     menuInstruction: "Haga clic en los iconos",
     back: "Volver",
+    exportPdf: "Exportar Guía (PDF)",
     menu: {
       welcome: "Bienvenidos",
       directions: "Instrucciones y Acceso",

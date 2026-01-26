@@ -13,10 +13,11 @@ import { PlacesService } from './services/places.service';
 })
 export class AppComponent {
   private placesService = inject(PlacesService);
-  
+
   lang = signal<'pt' | 'es'>('pt');
   view = signal<string>('home');
-  
+  isExporting = signal<boolean>(false);
+
   // Store fetched Google images: Key = Name, Value = URL
   placeImages = signal<Record<string, string>>({});
 
@@ -33,9 +34,10 @@ export class AppComponent {
   });
 
   constructor() {
-    // Effect to trigger image fetching when the guide view is active
+    console.log('Google Maps present?', typeof (window as any).google !== 'undefined');
+    // Effect to trigger image fetching when the guide view is active or exporting
     effect(() => {
-      if (this.view() === 'guide') {
+      if (this.view() === 'guide' || this.isExporting()) {
         this.fetchAllImages();
       }
     });
@@ -50,28 +52,42 @@ export class AppComponent {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  private async fetchAllImages() {
+  async exportToPdf() {
+    this.isExporting.set(true);
+    // Wait for all images to be fetched in parallel
+    await this.fetchAllImages();
+    // Extra delay for the browser to render the images into the DOM
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    window.print();
+    this.isExporting.set(false);
+  }
+
+  private async fetchAllImages(): Promise<void> {
     const currentContent = this.content();
     const categories = ['food', 'market', 'gas', 'coffee'] as const;
+    const promises: Promise<void>[] = [];
 
     // Loop through all categories and items
     for (const cat of categories) {
       for (const item of currentContent.links[cat]) {
         // Only fetch if we don't have it yet
         if (!this.placeImages()[item.name]) {
-          try {
-            const url = await this.placesService.getPlacePhoto(item.name);
-            if (url) {
-              this.placeImages.update(prev => ({
-                ...prev,
-                [item.name]: url
-              }));
+          promises.push((async () => {
+            try {
+              const url = await this.placesService.getPlacePhoto(item.name);
+              if (url) {
+                this.placeImages.update(prev => ({
+                  ...prev,
+                  [item.name]: url
+                }));
+              }
+            } catch (e) {
+              console.warn(`Could not fetch image for ${item.name}`, e);
             }
-          } catch (e) {
-            console.warn(`Could not fetch image for ${item.name}`, e);
-          }
+          })());
         }
       }
     }
+    await Promise.all(promises);
   }
 }

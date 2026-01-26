@@ -1,324 +1,362 @@
 <div class="min-h-screen flex flex-col relative pb-10">
 
   <!-- Header -->
-  <header class="p-6 bg-white text-center shadow-sm z-10 sticky top-0">
+  <header class="p-6 bg-white text-center shadow-sm z-10 sticky top-0 no-print">
     <div class="flex justify-between items-center mb-4">
       <!-- Language Switcher -->
       <div class="flex gap-2">
-        <button
-          (click)="setLang('pt')"
-          class="px-3 py-1 text-xs font-bold rounded-full transition-colors border"
-          [class]="lang() === 'pt' ? 'bg-primary text-white border-primary' : 'bg-transparent text-gray-400 border-gray-200'"
-        >PT</button>
-        <button
-          (click)="setLang('es')"
-          class="px-3 py-1 text-xs font-bold rounded-full transition-colors border"
-          [class]="lang() === 'es' ? 'bg-primary text-white border-primary' : 'bg-transparent text-gray-400 border-gray-200'"
-        >ES</button>
+        <button (click)="setLang('pt')" class="px-3 py-1 text-xs font-bold rounded-full transition-colors border"
+          [class]="lang() === 'pt' ? 'bg-primary text-white border-primary' : 'bg-transparent text-gray-400 border-gray-200'">PT</button>
+        <button (click)="setLang('es')" class="px-3 py-1 text-xs font-bold rounded-full transition-colors border"
+          [class]="lang() === 'es' ? 'bg-primary text-white border-primary' : 'bg-transparent text-gray-400 border-gray-200'">ES</button>
       </div>
+
+      <!-- Export PDF Button -->
+      <button (click)="exportToPdf()"
+        class="flex items-center gap-2 px-3 py-1 text-xs font-bold rounded-full transition-colors border bg-white text-gray-600 border-gray-200 hover:border-primary hover:text-primary">
+        <div class="w-4 h-4"><app-icon name="file-text"></app-icon></div>
+        {{ content().exportPdf }}
+      </button>
 
       <!-- Menu Button if not on home -->
       @if (view() !== 'home') {
-        <button (click)="setView('home')" class="text-primary font-bold uppercase text-sm flex items-center gap-1 hover:underline">
-           <div class="w-4 h-4"><app-icon name="home"></app-icon></div>
-           {{ content().back }}
-        </button>
+      <button (click)="setView('home')"
+        class="text-primary font-bold uppercase text-sm flex items-center gap-1 hover:underline">
+        <div class="w-4 h-4"><app-icon name="home"></app-icon></div>
+        {{ content().back }}
+      </button>
       }
     </div>
 
     <h1 class="text-3xl font-serif text-primary font-bold tracking-tight">{{ content().title }}</h1>
     @if (view() === 'home') {
-      <p class="text-gray-500 mt-2 text-sm uppercase tracking-widest">{{ content().subtitle }}</p>
-      <p class="text-xs text-gray-400 mt-1">{{ content().menuInstruction }}</p>
+    <p class="text-gray-500 mt-2 text-sm uppercase tracking-widest">{{ content().subtitle }}</p>
+    <p class="text-xs text-gray-400 mt-1">{{ content().menuInstruction }}</p>
     }
   </header>
 
+  <!-- Exporting Header (Visible only when printing) -->
+  <div class="hidden print-only text-center py-10">
+    <h1 class="text-4xl font-serif text-primary font-bold tracking-tight mb-2">{{ content().title }}</h1>
+    <p class="text-gray-500 text-sm uppercase tracking-widest">{{ content().subtitle }}</p>
+  </div>
+
   <!-- Main Content Area -->
   <main class="flex-grow container mx-auto max-w-lg">
-    @if (view() === 'home') {
-      <app-menu-grid [labels]="content().menu" (select)="setView($event)"></app-menu-grid>
+    @if (!isExporting() && view() === 'home') {
+    <app-menu-grid [labels]="content().menu" (select)="setView($event)"></app-menu-grid>
     }
 
     <!-- Detail Views -->
-    @if (view() !== 'home') {
-      <div class="p-6 animate-fade-in">
+    @if (isExporting() || view() !== 'home') {
+    <div class="animate-fade-in">
+      @for (v of (isExporting() ? ['welcome', 'directions', 'checkin', 'wifi', 'rules', 'guide', 'contact'] : [view()]);
+      track v) {
+      <div [class.print-page-break]="isExporting()" [class.pb-10]="isExporting()" class="p-6">
 
         <!-- WELCOME VIEW -->
-        @if (view() === 'welcome') {
-          <div class="space-y-6">
-            <div class="relative rounded-2xl overflow-hidden shadow-xl aspect-[4/3]">
-              <img src="https://picsum.photos/800/600?random=1" alt="Welcome" class="object-cover w-full h-full">
-              <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-6">
-                 <h2 class="text-white font-serif text-2xl">{{ content().sections.welcome.title }}</h2>
-              </div>
-            </div>
-            <div class="prose prose-stone text-gray-600 leading-relaxed bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-              <p>{{ content().sections.welcome.body }}</p>
-            </div>
-            <div class="flex items-center gap-4 bg-primary-light p-4 rounded-lg">
-               <div class="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white font-bold text-xl shadow-lg shrink-0">H</div>
-               <div>
-                 <p class="font-bold text-primary">Helen</p>
-                 <p class="text-xs text-gray-500">Superhost</p>
-               </div>
+        @if (v === 'welcome') {
+        <div class="space-y-6">
+          <div class="relative rounded-2xl overflow-hidden shadow-xl aspect-[4/3]">
+            <img src="https://picsum.photos/800/600?random=1" alt="Welcome" class="object-cover w-full h-full">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-6">
+              <h2 class="text-white font-serif text-2xl">{{ content().sections.welcome.title }}</h2>
             </div>
           </div>
+          <div
+            class="prose prose-stone text-gray-600 leading-relaxed bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+            <p>{{ content().sections.welcome.body }}</p>
+          </div>
+          <div class="flex items-center gap-4 bg-primary-light p-4 rounded-lg">
+            <div
+              class="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white font-bold text-xl shadow-lg shrink-0">
+              H</div>
+            <div>
+              <p class="font-bold text-primary">Helen</p>
+              <p class="text-xs text-gray-500">Superhost</p>
+            </div>
+          </div>
+        </div>
         }
 
         <!-- CHECKIN VIEW -->
-        @if (view() === 'checkin') {
-          <div class="space-y-6">
-            <h2 class="text-3xl font-serif text-primary mb-4">{{ content().sections.checkin.title }}</h2>
+        @if (v === 'checkin') {
+        <div class="space-y-6">
+          <h2 class="text-3xl font-serif text-primary mb-4">{{ content().sections.checkin.title }}</h2>
 
-            @for (item of content().sections.checkin.items; track $index) {
-              <div class="flex gap-4 p-4 bg-white rounded-xl shadow-sm border-l-4 border-primary">
-                <div class="text-primary mt-1 w-6 h-6 shrink-0">
-                  <app-icon name="key"></app-icon>
-                </div>
-                <div>
-                  <h3 class="font-bold text-gray-800">{{ item.label }}</h3>
-                  <p class="text-sm text-gray-600 mt-1">{{ item.text }}</p>
-                </div>
-              </div>
-            }
-
-            <!-- Lock Info -->
-             <div class="flex gap-4 p-4 bg-white rounded-xl shadow-sm border-l-4 border-primary">
-                <div class="text-primary mt-1 w-6 h-6 shrink-0">
-                  <span class="text-xl">🔐</span>
-                </div>
-                <div>
-                  <h3 class="font-bold text-gray-800">{{ content().sections.checkin.lock.title }}</h3>
-                  <p class="text-sm text-gray-600 mt-1">{{ content().sections.checkin.lock.text }}</p>
-                </div>
-             </div>
-
-            <div class="p-4 bg-yellow-50 border border-yellow-200 rounded-xl text-sm text-yellow-800 flex gap-3">
-              <span class="text-xl">⚠️</span>
-              <p>{{ content().sections.checkin.note }}</p>
+          @for (item of content().sections.checkin.items; track $index) {
+          <div class="flex gap-4 p-4 bg-white rounded-xl shadow-sm border-l-4 border-primary">
+            <div class="text-primary mt-1 w-6 h-6 shrink-0">
+              <app-icon name="key"></app-icon>
+            </div>
+            <div>
+              <h3 class="font-bold text-gray-800">{{ item.label }}</h3>
+              <p class="text-sm text-gray-600 mt-1">{{ item.text }}</p>
             </div>
           </div>
+          }
+
+          <!-- Lock Info -->
+          <div class="flex gap-4 p-4 bg-white rounded-xl shadow-sm border-l-4 border-primary">
+            <div class="text-primary mt-1 w-6 h-6 shrink-0">
+              <span class="text-xl">🔐</span>
+            </div>
+            <div>
+              <h3 class="font-bold text-gray-800">{{ content().sections.checkin.lock.title }}</h3>
+              <p class="text-sm text-gray-600 mt-1">{{ content().sections.checkin.lock.text }}</p>
+            </div>
+          </div>
+
+          <div class="p-4 bg-yellow-50 border border-yellow-200 rounded-xl text-sm text-yellow-800 flex gap-3">
+            <span class="text-xl">⚠️</span>
+            <p>{{ content().sections.checkin.note }}</p>
+          </div>
+        </div>
         }
 
         <!-- DIRECTIONS / ACCESS VIEW -->
-        @if (view() === 'directions') {
-          <div class="space-y-8">
-            <h2 class="text-3xl font-serif text-primary">{{ content().sections.access.title }}</h2>
+        @if (v === 'directions') {
+        <div class="space-y-8">
+          <h2 class="text-3xl font-serif text-primary">{{ content().sections.access.title }}</h2>
 
-            <!-- Vehicle Access -->
-            <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
-               <div class="flex items-center gap-2 mb-3 text-primary">
-                 <div class="w-5 h-5"><app-icon name="car"></app-icon></div>
-                 <h3 class="font-bold uppercase tracking-wide text-sm">Acesso Veicular</h3>
-               </div>
-               <p class="text-gray-600 text-sm leading-relaxed">{{ content().sections.access.vehicle }}</p>
+          <!-- Vehicle Access -->
+          <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
+            <div class="flex items-center gap-2 mb-3 text-primary">
+              <div class="w-5 h-5"><app-icon name="car"></app-icon></div>
+              <h3 class="font-bold uppercase tracking-wide text-sm">Acesso Veicular</h3>
             </div>
+            <p class="text-gray-600 text-sm leading-relaxed">{{ content().sections.access.vehicle }}</p>
+          </div>
 
-             <!-- Parking -->
-            <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
-               <div class="flex items-center gap-2 mb-3 text-primary">
-                 <div class="w-5 h-5"><app-icon name="map"></app-icon></div>
-                 <h3 class="font-bold uppercase tracking-wide text-sm">{{ content().sections.access.parking.title }}</h3>
-               </div>
-               <p class="text-gray-600 text-sm mb-3">{{ content().sections.access.parking.text }}</p>
-               <div class="bg-secondary text-black font-bold p-3 rounded text-center shadow-sm">
-                 {{ content().sections.access.parking.spot }}
-               </div>
+          <!-- Parking -->
+          <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
+            <div class="flex items-center gap-2 mb-3 text-primary">
+              <div class="w-5 h-5"><app-icon name="map"></app-icon></div>
+              <h3 class="font-bold uppercase tracking-wide text-sm">{{ content().sections.access.parking.title }}</h3>
             </div>
-
-            <!-- Path to apartment -->
-             <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
-               <div class="flex items-center gap-2 mb-4 text-primary">
-                 <div class="w-5 h-5"><app-icon name="home"></app-icon></div>
-                 <h3 class="font-bold uppercase tracking-wide text-sm">{{ content().sections.access.path.title }}</h3>
-               </div>
-               <p class="text-sm font-bold text-gray-700 mb-2">{{ content().sections.access.path.intro }}</p>
-               <ul class="space-y-4 relative border-l-2 border-gray-200 ml-2 pl-6 mb-4">
-                 @for (step of content().sections.access.path.steps; track $index) {
-                   <li class="relative text-sm text-gray-600">
-                     <span class="absolute -left-[31px] top-0 w-4 h-4 rounded-full bg-primary border-4 border-white"></span>
-                     {{ step }}
-                   </li>
-                 }
-               </ul>
-               <div class="bg-primary text-white font-bold p-3 rounded text-center shadow-sm text-sm">
-                 {{ content().sections.access.path.location }}
-               </div>
+            <p class="text-gray-600 text-sm mb-3">{{ content().sections.access.parking.text }}</p>
+            <div class="bg-secondary text-black font-bold p-3 rounded text-center shadow-sm">
+              {{ content().sections.access.parking.spot }}
             </div>
           </div>
+
+          <!-- Path to apartment -->
+          <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
+            <div class="flex items-center gap-2 mb-4 text-primary">
+              <div class="w-5 h-5"><app-icon name="home"></app-icon></div>
+              <h3 class="font-bold uppercase tracking-wide text-sm">{{ content().sections.access.path.title }}</h3>
+            </div>
+            <p class="text-sm font-bold text-gray-700 mb-2">{{ content().sections.access.path.intro }}</p>
+            <ul class="space-y-4 relative border-l-2 border-gray-200 ml-2 pl-6 mb-4">
+              @for (step of content().sections.access.path.steps; track $index) {
+              <li class="relative text-sm text-gray-600">
+                <span class="absolute -left-[31px] top-0 w-4 h-4 rounded-full bg-primary border-4 border-white"></span>
+                {{ step }}
+              </li>
+              }
+            </ul>
+            <div class="bg-primary text-white font-bold p-3 rounded text-center shadow-sm text-sm">
+              {{ content().sections.access.path.location }}
+            </div>
+          </div>
+        </div>
         }
 
         <!-- WIFI VIEW -->
-        @if (view() === 'wifi') {
-          <div class="flex flex-col items-center justify-center min-h-[50vh] text-center space-y-8">
-            <h2 class="text-3xl font-serif text-primary">{{ content().sections.wifi.title }}</h2>
+        @if (v === 'wifi') {
+        <div class="flex flex-col items-center justify-center text-center space-y-8"
+          [class.min-h-[50vh]]="!isExporting()">
+          <h2 class="text-3xl font-serif text-primary">{{ content().sections.wifi.title }}</h2>
 
-            <div class="w-full max-w-xs bg-white p-8 rounded-2xl shadow-lg border border-gray-100 space-y-6">
-              
-              <!-- QR CODE -->
-              <div class="flex justify-center">
-                 <img [src]="wifiQrUrl()" class="w-48 h-48 border rounded-lg shadow-sm" alt="QR Code Wifi">
-              </div>
+          <div class="w-full max-w-xs bg-white p-8 rounded-2xl shadow-lg border border-gray-100 space-y-6">
 
-              <div>
-                <p class="text-xs uppercase text-gray-400 font-bold mb-1">Rede / Network</p>
-                <p class="text-xl font-bold text-gray-800">{{ content().sections.wifi.network }}</p>
-              </div>
-              <hr class="border-gray-100">
-              <div>
-                <p class="text-xs uppercase text-gray-400 font-bold mb-1">Senha / Password</p>
-                <p class="text-2xl font-mono text-primary font-bold tracking-widest break-all">{{ content().sections.wifi.pass }}</p>
-              </div>
+            <!-- QR CODE -->
+            <div class="flex justify-center">
+              <img [src]="wifiQrUrl()" class="w-48 h-48 border rounded-lg shadow-sm" alt="QR Code Wifi">
+            </div>
+
+            <div>
+              <p class="text-xs uppercase text-gray-400 font-bold mb-1">Rede / Network</p>
+              <p class="text-xl font-bold text-gray-800">{{ content().sections.wifi.network }}</p>
+            </div>
+            <hr class="border-gray-100">
+            <div>
+              <p class="text-xs uppercase text-gray-400 font-bold mb-1">Senha / Password</p>
+              <p class="text-2xl font-mono text-primary font-bold tracking-widest break-all">{{
+                content().sections.wifi.pass }}</p>
             </div>
           </div>
+        </div>
         }
 
         <!-- RULES VIEW -->
-        @if (view() === 'rules') {
-           <div class="space-y-6">
-            <h2 class="text-3xl font-serif text-primary mb-6">{{ content().sections.rules.title }}</h2>
+        @if (v === 'rules') {
+        <div class="space-y-6">
+          <h2 class="text-3xl font-serif text-primary mb-6">{{ content().sections.rules.title }}</h2>
 
-            <!-- Common Areas -->
-            <div class="bg-red-50 p-6 rounded-xl border border-red-100 text-red-900">
-               <h3 class="font-bold mb-2 flex items-center gap-2">
-                 <span class="text-xl">🚫</span> {{ content().sections.rules.commonAreas.title }}
-               </h3>
-               <p class="text-sm leading-relaxed">{{ content().sections.rules.commonAreas.text }}</p>
+          <!-- Common Areas -->
+          <div class="bg-red-50 p-6 rounded-xl border border-red-100 text-red-900">
+            <h3 class="font-bold mb-2 flex items-center gap-2">
+              <span class="text-xl">🚫</span> {{ content().sections.rules.commonAreas.title }}
+            </h3>
+            <p class="text-sm leading-relaxed">{{ content().sections.rules.commonAreas.text }}</p>
+          </div>
+
+          <!-- Cleaning & Bedding Combined -->
+          <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 text-gray-700 space-y-6">
+            <div>
+              <h3 class="font-bold mb-3 flex items-center gap-2 text-primary">
+                <div class="w-5 h-5"><app-icon name="file-text"></app-icon></div>
+                {{ content().sections.rules.cleaning.title }}
+              </h3>
+              <p class="text-sm leading-relaxed">{{ content().sections.rules.cleaning.text }}</p>
             </div>
 
-            <!-- Cleaning & Bedding Combined -->
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 text-gray-700 space-y-6">
-               <div>
-                  <h3 class="font-bold mb-3 flex items-center gap-2 text-primary">
-                    <div class="w-5 h-5"><app-icon name="file-text"></app-icon></div>
-                    {{ content().sections.rules.cleaning.title }}
-                  </h3>
-                  <p class="text-sm leading-relaxed">{{ content().sections.rules.cleaning.text }}</p>
-               </div>
-
-               <div class="border-t border-gray-100 pt-6">
-                  <h3 class="font-bold mb-3 flex items-center gap-2 text-primary">
-                    <div class="w-5 h-5"><app-icon name="home"></app-icon></div>
-                    {{ content().sections.rules.bedding.title }}
-                  </h3>
-                  <p class="text-sm leading-relaxed">{{ content().sections.rules.bedding.text }}</p>
-               </div>
+            <div class="border-t border-gray-100 pt-6">
+              <h3 class="font-bold mb-3 flex items-center gap-2 text-primary">
+                <div class="w-5 h-5"><app-icon name="home"></app-icon></div>
+                {{ content().sections.rules.bedding.title }}
+              </h3>
+              <p class="text-sm leading-relaxed">{{ content().sections.rules.bedding.text }}</p>
             </div>
           </div>
+        </div>
         }
 
         <!-- GUIDE VIEW -->
-        @if (view() === 'guide') {
-          <div class="space-y-8">
-            <h2 class="text-3xl font-serif text-primary">{{ content().sections.guide.title }}</h2>
+        @if (v === 'guide') {
+        <div class="space-y-8">
+          <h2 class="text-3xl font-serif text-primary">{{ content().sections.guide.title }}</h2>
 
-            <!-- Food -->
-            <section>
-              <h3 class="font-bold text-gray-800 mb-4 flex items-center gap-2 text-sm">
-                <div class="w-5 h-5 text-primary shrink-0"><app-icon name="utensils"></app-icon></div>
-                {{ content().sections.guide.food }}
-              </h3>
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                 @for (item of content().links.food; track $index) {
-                   <a [href]="item.url" target="_blank" class="block bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300 group border border-gray-100">
-                      <div class="h-32 overflow-hidden relative">
-                        <!-- CHANGE: Use placeImages map, fallback to Picsum -->
-                        <img [src]="placeImages()[item.name] || item.image" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="Preview">
-                        <div class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors"></div>
-                      </div>
-                      <div class="p-4 flex justify-between items-center">
-                        <span class="font-bold text-gray-700 text-sm group-hover:text-primary transition-colors">{{ item.name }}</span>
-                        <div class="w-4 h-4 text-gray-300 group-hover:text-primary transition-colors">
-                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
-                        </div>
-                      </div>
-                   </a>
-                 }
-              </div>
-            </section>
-
-             <!-- Markets -->
-            <section>
-              <h3 class="font-bold text-gray-800 mb-4 flex items-center gap-2 text-sm">
-                <div class="w-5 h-5 text-primary shrink-0"><app-icon name="shopping-cart"></app-icon></div>
-                {{ content().sections.guide.market }}
-              </h3>
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                 @for (item of content().links.market; track $index) {
-                   <a [href]="item.url" target="_blank" class="block bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300 group border border-gray-100">
-                      <div class="h-32 overflow-hidden relative">
-                         <img [src]="placeImages()[item.name] || item.image" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="Preview">
-                      </div>
-                      <div class="p-4 flex justify-between items-center">
-                        <span class="font-bold text-gray-700 text-sm group-hover:text-primary transition-colors">{{ item.name }}</span>
-                        <div class="w-4 h-4 text-gray-300 group-hover:text-primary transition-colors">
-                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
-                        </div>
-                      </div>
-                   </a>
-                 }
-              </div>
-            </section>
-
-             <!-- Other (Gas + Coffee) Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
-              <section>
-                <h3 class="font-bold text-gray-800 mb-4 text-sm">{{ content().sections.guide.gas }}</h3>
-                <div class="space-y-3">
-                 @for (item of content().links.gas; track $index) {
-                   <a [href]="item.url" target="_blank" class="flex items-center gap-3 bg-white p-2 pr-4 rounded-lg border hover:border-primary transition-all group hover:shadow-md">
-                     <img [src]="placeImages()[item.name] || item.image" class="w-12 h-12 rounded object-cover shrink-0" alt="">
-                     <div class="flex-grow">
-                        <p class="text-xs font-bold text-gray-700 group-hover:text-primary">{{ item.name }}</p>
-                     </div>
-                     <span class="text-gray-300 group-hover:text-primary">↗</span>
-                   </a>
-                 }
+          <!-- Food -->
+          <section>
+            <h3 class="font-bold text-gray-800 mb-4 flex items-center gap-2 text-sm">
+              <div class="w-5 h-5 text-primary shrink-0"><app-icon name="utensils"></app-icon></div>
+              {{ content().sections.guide.food }}
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              @for (item of content().links.food; track $index) {
+              <a [href]="item.url" target="_blank"
+                class="block bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300 group border border-gray-100">
+                <div class="h-32 overflow-hidden relative">
+                  <!-- CHANGE: Use placeImages map, fallback to Picsum -->
+                  <img [src]="placeImages()[item.name] || item.image"
+                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    alt="Preview">
+                  <div class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors"></div>
                 </div>
-              </section>
-
-              <section>
-                <h3 class="font-bold text-gray-800 mb-4 text-sm">{{ content().sections.guide.coffee }}</h3>
-                <div class="space-y-3">
-                 @for (item of content().links.coffee; track $index) {
-                   <a [href]="item.url" target="_blank" class="flex items-center gap-3 bg-white p-2 pr-4 rounded-lg border hover:border-primary transition-all group hover:shadow-md">
-                     <img [src]="placeImages()[item.name] || item.image" class="w-12 h-12 rounded object-cover shrink-0" alt="">
-                     <div class="flex-grow">
-                        <p class="text-xs font-bold text-gray-700 group-hover:text-primary">{{ item.name }}</p>
-                     </div>
-                     <span class="text-gray-300 group-hover:text-primary">↗</span>
-                   </a>
-                 }
+                <div class="p-4 flex justify-between items-center">
+                  <span class="font-bold text-gray-700 text-sm group-hover:text-primary transition-colors">{{ item.name
+                    }}</span>
+                  <div class="w-4 h-4 text-gray-300 group-hover:text-primary transition-colors no-print">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                      <polyline points="15 3 21 3 21 9" />
+                      <line x1="10" x2="21" y1="14" y2="3" />
+                    </svg>
+                  </div>
                 </div>
-              </section>
+              </a>
+              }
             </div>
+          </section>
+
+          <!-- Markets -->
+          <section>
+            <h3 class="font-bold text-gray-800 mb-4 flex items-center gap-2 text-sm">
+              <div class="w-5 h-5 text-primary shrink-0"><app-icon name="shopping-cart"></app-icon></div>
+              {{ content().sections.guide.market }}
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              @for (item of content().links.market; track $index) {
+              <a [href]="item.url" target="_blank"
+                class="block bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300 group border border-gray-100">
+                <div class="h-32 overflow-hidden relative">
+                  <img [src]="placeImages()[item.name] || item.image"
+                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    alt="Preview">
+                </div>
+                <div class="p-4 flex justify-between items-center">
+                  <span class="font-bold text-gray-700 text-sm group-hover:text-primary transition-colors">{{ item.name
+                    }}</span>
+                  <div class="w-4 h-4 text-gray-300 group-hover:text-primary transition-colors no-print">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                      <polyline points="15 3 21 3 21 9" />
+                      <line x1="10" x2="21" y1="14" y2="3" />
+                    </svg>
+                  </div>
+                </div>
+              </a>
+              }
+            </div>
+          </section>
+
+          <!-- Other (Gas + Coffee) Grid -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+            <section>
+              <h3 class="font-bold text-gray-800 mb-4 text-sm">{{ content().sections.guide.gas }}</h3>
+              <div class="space-y-3">
+                @for (item of content().links.gas; track $index) {
+                <a [href]="item.url" target="_blank"
+                  class="flex items-center gap-3 bg-white p-2 pr-4 rounded-lg border hover:border-primary transition-all group hover:shadow-md">
+                  <img [src]="placeImages()[item.name] || item.image" class="w-12 h-12 rounded object-cover shrink-0"
+                    alt="">
+                  <div class="flex-grow">
+                    <p class="text-xs font-bold text-gray-700 group-hover:text-primary">{{ item.name }}</p>
+                  </div>
+                  <span class="text-gray-300 group-hover:text-primary no-print">↗</span>
+                </a>
+                }
+              </div>
+            </section>
+
+            <section>
+              <h3 class="font-bold text-gray-800 mb-4 text-sm">{{ content().sections.guide.coffee }}</h3>
+              <div class="space-y-3">
+                @for (item of content().links.coffee; track $index) {
+                <a [href]="item.url" target="_blank"
+                  class="flex items-center gap-3 bg-white p-2 pr-4 rounded-lg border hover:border-primary transition-all group hover:shadow-md">
+                  <img [src]="placeImages()[item.name] || item.image" class="w-12 h-12 rounded object-cover shrink-0"
+                    alt="">
+                  <div class="flex-grow">
+                    <p class="text-xs font-bold text-gray-700 group-hover:text-primary">{{ item.name }}</p>
+                  </div>
+                  <span class="text-gray-300 group-hover:text-primary no-print">↗</span>
+                </a>
+                }
+              </div>
+            </section>
           </div>
+        </div>
         }
 
         <!-- CONTACT VIEW -->
-        @if (view() === 'contact') {
-           <div class="flex flex-col items-center justify-center min-h-[60vh] text-center space-y-6">
-             <div class="w-32 h-32 rounded-full overflow-hidden border-4 border-white shadow-xl">
-               <!-- CHANGE: Used configured profile image -->
-               <img [src]="content().sections.contact.profileImage" class="w-full h-full object-cover">
-             </div>
-             <div>
-               <h2 class="text-3xl font-serif text-primary mb-2">{{ content().sections.contact.title }}</h2>
-               <p class="text-gray-600 max-w-xs mx-auto text-sm">{{ content().sections.contact.text }}</p>
-             </div>
-             <a
-               [href]="'https://wa.me/' + content().sections.contact.phone.replace(/[^0-9]/g, '')"
-               target="_blank"
-               class="flex items-center gap-3 bg-[#25D366] text-white px-8 py-4 rounded-full font-bold text-lg shadow-lg hover:brightness-105 transition-all hover:scale-105"
-             >
-                <div class="w-6 h-6"><app-icon name="message-circle"></app-icon></div>
-                WhatsApp Helen
-             </a>
-             <p class="text-sm font-mono text-gray-400">{{ content().sections.contact.phone }}</p>
-           </div>
+        @if (v === 'contact') {
+        <div class="flex flex-col items-center justify-center text-center space-y-6"
+          [class.min-h-[60vh]]="!isExporting()">
+          <div class="w-32 h-32 rounded-full overflow-hidden border-4 border-white shadow-xl">
+            <!-- CHANGE: Used configured profile image -->
+            <img [src]="content().sections.contact.profileImage" class="w-full h-full object-cover">
+          </div>
+          <div>
+            <h2 class="text-3xl font-serif text-primary mb-2">{{ content().sections.contact.title }}</h2>
+            <p class="text-gray-600 max-w-xs mx-auto text-sm">{{ content().sections.contact.text }}</p>
+          </div>
+          <a [href]="'https://wa.me/' + content().sections.contact.phone.replace(/[^0-9]/g, '')" target="_blank"
+            class="flex items-center gap-3 bg-[#25D366] text-white px-8 py-4 rounded-full font-bold text-lg shadow-lg hover:brightness-105 transition-all hover:scale-105 no-print">
+            <div class="w-6 h-6"><app-icon name="message-circle"></app-icon></div>
+            WhatsApp Helen
+          </a>
+          <p class="text-sm font-mono text-gray-400">{{ content().sections.contact.phone }}</p>
+        </div>
         }
 
       </div>
+      }
+    </div>
     }
   </main>
 
