@@ -17,7 +17,16 @@ export const APP_CONTENT = {
     sections: {
       welcome: {
         title: "Sejam muito bem-vindos!",
-        body: "É um prazer receber vocês. Meu nome é Helen, sou a anfitriã, e estarei à disposição para ajudar no que precisarem durante a estadia. Espero que se sintam confortáveis e aproveitem ao máximo o espaço."
+        body: "É um prazer receber vocês. Meu nome é Helen, sou a anfitriã, e estarei à disposição para ajudar no que precisarem durante a estadia. Espero que se sintam confortáveis e aproveitem ao máximo o espaço.",
+        address: {
+          name: "Santos Dumont Club Residence",
+          street: "R. Santos Dumont, 353 - Rui Ramos",
+          city: "Uruguaiana - RS, 97507-001",
+          mapUrl: "https://maps.app.goo.gl/YDPrt9ybrKxJ2x3C7?g_st=aw",
+          wazeUrl: "https://waze.com/ul?q=R.+Santos+Dumont,+353,+Uruguaiana",
+          googleMapsUrl: "https://www.google.com/maps/dir/?api=1&destination=-29.768509,-57.0694273",
+          appleMapsUrl: "https://maps.apple.com/?daddr=-29.768509,-57.0694273"
+        }
       },
       checkin: {
         title: "Check-in e Check-out",
@@ -134,7 +143,16 @@ export const APP_CONTENT = {
     sections: {
       welcome: {
         title: "¡Sean muy bienvenidos!",
-        body: "Es un placer recibirlos. Mi nombre es Helen, soy la anfitriona y estaré disponible para ayudarles en lo que necesiten durante su estadía. Espero que se sientan cómodos y disfruten del alojamiento."
+        body: "Es un placer recibirlos. Mi nombre es Helen, soy la anfitriona y estaré disponible para ayudarles en lo que necesiten durante su estadía. Espero que se sientan cómodos y disfruten del alojamiento.",
+        address: {
+          name: "Santos Dumont Club Residence",
+          street: "R. Santos Dumont, 353 - Rui Ramos",
+          city: "Uruguaiana - RS, 97507-001",
+          mapUrl: "https://maps.app.goo.gl/YDPrt9ybrKxJ2x3C7?g_st=aw",
+          wazeUrl: "https://waze.com/ul?q=R.+Santos+Dumont,+353,+Uruguaiana",
+          googleMapsUrl: "https://www.google.com/maps/dir/?api=1&destination=-29.768509,-57.0694273",
+          appleMapsUrl: "https://maps.apple.com/?daddr=-29.768509,-57.0694273"
+        }
       },
       checkin: {
         title: "Check-in y Check-out",

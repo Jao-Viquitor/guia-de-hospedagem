@@ -5,13 +5,14 @@ import { MenuGridComponent } from './components/menu-grid.component';
 import { IconComponent } from './components/icon.component';
 import { PlacesService } from './services/places.service';
 import { environment } from './environments/environment';
+import { SafePipe } from './pipes/safe.pipe';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, MenuGridComponent, IconComponent],
+  imports: [CommonModule, MenuGridComponent, IconComponent, SafePipe],
   templateUrl: './app.component.html'
 })
 export class AppComponent {
