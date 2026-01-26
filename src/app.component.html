@@ -31,7 +31,16 @@
     <h1 class="text-3xl font-serif text-primary font-bold tracking-tight">{{ content().title }}</h1>
     @if (view() === 'home') {
     <p class="text-gray-500 mt-2 text-sm uppercase tracking-widest">{{ content().subtitle }}</p>
-    <p class="text-xs text-gray-400 mt-1">{{ content().menuInstruction }}</p>
+    <!-- Animated instruction -->
+    <div class="mt-4 inline-flex items-center gap-2 bg-gradient-to-r from-primary to-primary/80 text-white px-6 py-3 rounded-full shadow-lg animate-gentle-bounce">
+      <svg class="w-5 h-5 animate-pulse" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="M9 18l6-6-6-6"/>
+      </svg>
+      <span class="font-bold text-sm">{{ content().menuInstruction }}</span>
+      <svg class="w-5 h-5 animate-pulse" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="M9 18l6-6-6-6"/>
+      </svg>
+    </div>
     }
   </header>
 
