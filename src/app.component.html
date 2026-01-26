@@ -4,11 +4,22 @@
   <header class="p-6 bg-white text-center shadow-sm z-10 sticky top-0 no-print">
     <div class="flex justify-between items-center mb-4">
       <!-- Language Switcher -->
-      <div class="flex gap-2">
-        <button (click)="setLang('pt')" class="px-3 py-1 text-xs font-bold rounded-full transition-colors border"
-          [class]="lang() === 'pt' ? 'bg-primary text-white border-primary' : 'bg-transparent text-gray-400 border-gray-200'">PT</button>
-        <button (click)="setLang('es')" class="px-3 py-1 text-xs font-bold rounded-full transition-colors border"
-          [class]="lang() === 'es' ? 'bg-primary text-white border-primary' : 'bg-transparent text-gray-400 border-gray-200'">ES</button>
+      <div class="flex flex-col gap-1">
+        <span class="text-xs text-gray-500 font-medium uppercase tracking-wide">
+          {{ lang() === 'pt' ? 'Idioma' : 'Idioma' }}
+        </span>
+        <div class="flex gap-2">
+          <button (click)="setLang('pt')" class="px-3 py-1.5 text-xs font-bold rounded-full transition-colors border flex items-center gap-1.5"
+            [class]="lang() === 'pt' ? 'bg-primary text-white border-primary' : 'bg-transparent text-gray-400 border-gray-200'">
+            <span class="text-base">🇧🇷</span>
+            PT
+          </button>
+          <button (click)="setLang('es')" class="px-3 py-1.5 text-xs font-bold rounded-full transition-colors border flex items-center gap-1.5"
+            [class]="lang() === 'es' ? 'bg-primary text-white border-primary' : 'bg-transparent text-gray-400 border-gray-200'">
+            <span class="text-base">🇪🇸</span>
+            ES
+          </button>
+        </div>
       </div>
 
       <!-- Export PDF Button -->
