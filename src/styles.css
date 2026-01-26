@@ -1,0 +1,212 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles */
+body {
+  font-family: 'Lato', sans-serif;
+  background-color: #FDFDFD;
+  color: #333;
+}
+
+h1, h2, h3, h4, h5, h6, .font-serif {
+  font-family: 'Playfair Display', serif;
+}
+
+/* Print utilities */
+@media print {
+  @page {
+    margin: 1cm;
+    size: auto;
+  }
+
+  html, body {
+    background-color: white !important;
+    width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: block !important;
+  }
+
+  .min-h-screen, main, .container, .animate-fade-in {
+    display: block !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    position: static !important;
+    overflow: visible !important;
+    height: auto !important;
+    transform: none !important;
+    animation: none !important;
+    opacity: 1 !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  .print-page-break {
+    display: block !important;
+    float: none !important;
+    clear: both !important;
+    position: relative !important;
+    break-before: page !important;
+    page-break-before: always !important;
+    margin-top: 0 !important;
+    padding-top: 2rem !important;
+  }
+
+  .animate-fade-in {
+    display: block !important;
+  }
+
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  img {
+    max-width: 100% !important;
+    height: auto !important;
+    display: block !important;
+    break-inside: avoid !important;
+  }
+
+  .grid {
+    display: block !important;
+  }
+
+  .grid > * {
+    margin-bottom: 2rem !important;
+    break-inside: avoid !important;
+  }
+
+  .print-index-page {
+    break-after: page !important;
+    page-break-after: always !important;
+    padding: 0.75rem 1rem !important;
+  }
+
+  .print-index-page app-menu-grid {
+    display: block !important;
+    width: 100% !important;
+    max-width: 600px !important;
+    margin: 0 auto !important;
+  }
+
+  .print-only {
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+    text-align: center !important;
+  }
+
+  .print-only h1 {
+    font-size: 1.75rem !important;
+    margin-bottom: 0.25rem !important;
+  }
+
+  .print-only p {
+    font-size: 0.75rem !important;
+    margin-top: 0.25rem !important;
+  }
+
+  app-menu-grid .grid-cols-2 {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    column-gap: 0.5rem !important;
+    row-gap: 0.35rem !important;
+    margin: 0 auto !important;
+    max-width: 600px !important;
+    width: 100% !important;
+  }
+
+  app-menu-grid .grid-cols-2 > button,
+  app-menu-grid .grid-cols-2 > a {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 1rem 0.875rem !important;
+    margin: 0 !important;
+    break-inside: avoid !important;
+    min-height: 240px !important;
+    max-height: 240px !important;
+    page-break-inside: avoid !important;
+  }
+
+  app-menu-grid .grid-cols-2 > button .w-12,
+  app-menu-grid .grid-cols-2 > a .w-12 {
+    width: 3rem !important;
+    height: 3rem !important;
+  }
+
+  app-menu-grid .grid-cols-2 > button span,
+  app-menu-grid .grid-cols-2 > a span {
+    margin-top: 0.7rem !important;
+    font-size: 0.875rem !important;
+    line-height: 1.2 !important;
+  }
+
+  app-menu-grid .grid-cols-2 > button.col-span-2,
+  app-menu-grid .grid-cols-2 > a.col-span-2 {
+    grid-column: span 2 !important;
+    flex-direction: row !important;
+    min-height: 55px !important;
+    max-height: 55px !important;
+    gap: 0.5rem !important;
+    padding: 0.75rem 1rem !important;
+  }
+
+  app-menu-grid .grid-cols-2 > button.col-span-2 .w-8,
+  app-menu-grid .grid-cols-2 > a.col-span-2 .w-8 {
+    width: 1.5rem !important;
+    height: 1.5rem !important;
+  }
+
+  app-menu-grid .grid-cols-2 > button.col-span-2 span,
+  app-menu-grid .grid-cols-2 > a.col-span-2 span {
+    margin-top: 0 !important;
+    font-size: 0.9rem !important;
+  }
+
+  section .grid.grid-cols-1.sm\:grid-cols-2:has(a[target="_blank"]) {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 1rem !important;
+  }
+
+  section .grid.grid-cols-1.sm\:grid-cols-2 > a {
+    display: flex !important;
+    flex-direction: column !important;
+    margin: 0 !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  section .grid.grid-cols-1.sm\:grid-cols-2 > a img {
+    width: 100% !important;
+    height: auto !important;
+    max-height: 120px !important;
+    object-fit: cover !important;
+  }
+
+  .grid.gap-8:has(section) {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 2rem !important;
+  }
+
+  .grid.gap-8 > section {
+    display: block !important;
+    margin: 0 !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+}
