@@ -5,7 +5,7 @@ import { provideZonelessChangeDetection } from '@angular/core';
 import { environment } from './src/environments/environment';
 
 // Dynamically load Google Maps script using environment configuration
-const apiKey = environment.googleMapsApiKey;
+const apiKey = environment.googleMapsApiKey || (window as any).__ENV__?.VITE_GOOGLE_MAPS_API_KEY || '';
 console.log('API Key loaded:', apiKey ? 'YES (starts with ' + apiKey.substring(0, 4) + ')' : 'NO');
 if (apiKey) {
   const script = document.createElement('script');
