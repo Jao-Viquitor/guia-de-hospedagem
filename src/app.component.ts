@@ -1,9 +1,10 @@
-import { Component, signal, computed, inject, effect } from '@angular/core';
+import { Component, signal, computed, inject, effect, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { APP_CONTENT } from './services/content.data';
 import { MenuGridComponent } from './components/menu-grid.component';
 import { IconComponent } from './components/icon.component';
 import { PlacesService } from './services/places.service';
+import { environment } from './environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -13,6 +14,7 @@ import { PlacesService } from './services/places.service';
 })
 export class AppComponent {
   private placesService = inject(PlacesService);
+  private cdr = inject(ChangeDetectorRef);
 
   lang = signal<'pt' | 'es'>('pt');
   view = signal<string>('home');
@@ -54,12 +56,37 @@ export class AppComponent {
 
   async exportToPdf() {
     this.isExporting.set(true);
+    this.cdr.detectChanges(); // Force Angular to render the hidden sections
+
     // Wait for all images to be fetched in parallel
     await this.fetchAllImages();
-    // Extra delay for the browser to render the images into the DOM
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    this.cdr.detectChanges(); // Update DOM with new image URLs
+
+    // Wait for all <img> tags to actually finish downloading/decoding
+    await this.waitForAllImagesToLoad();
+
+    // Tiny extra buffer for the OS print dialog
+    await new Promise(resolve => setTimeout(resolve, 500));
+
     window.print();
     this.isExporting.set(false);
+    this.cdr.detectChanges();
+  }
+
+  private async waitForAllImagesToLoad() {
+    const images = Array.from(document.querySelectorAll('img'));
+    const promises = images.map(img => {
+      if (img.complete) return Promise.resolve();
+      return new Promise(resolve => {
+        img.onload = resolve;
+        img.onerror = resolve; // Continue even if one fails
+      });
+    });
+    // Timeout of 5 seconds total for images
+    await Promise.race([
+      Promise.all(promises),
+      new Promise(resolve => setTimeout(resolve, 5000))
+    ]);
   }
 
   private async fetchAllImages(): Promise<void> {

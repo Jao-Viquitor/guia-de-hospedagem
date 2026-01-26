@@ -14,25 +14,30 @@ export class PlacesService {
     this.initService();
   }
 
-  private initService() {
+  private initService(): boolean {
     // Only initialize if the Google script has loaded
-    if (typeof google !== 'undefined' && google.maps && google.maps.places) {
-      const dummyElement = document.createElement('div');
-      this.placesService = new google.maps.places.PlacesService(dummyElement);
-    } else {
-      // Retry in a second if script hasn't loaded yet
-      setTimeout(() => this.initService(), 1000);
+    if (typeof (window as any).google !== 'undefined' && (window as any).google.maps && (window as any).google.maps.places) {
+      if (!this.placesService) {
+        const dummyElement = document.createElement('div');
+        this.placesService = new (window as any).google.maps.places.PlacesService(dummyElement);
+      }
+      return true;
     }
+    return false;
   }
 
-  getPlacePhoto(query: string): Promise<string | null> {
+  async getPlacePhoto(query: string): Promise<string | null> {
     if (this.cache.has(query)) {
-      return Promise.resolve(this.cache.get(query)!);
+      return this.cache.get(query)!;
     }
 
+    // Try to initialize if not ready
     if (!this.placesService) {
-      this.initService();
-      if (!this.placesService) return Promise.resolve(null);
+      if (!this.initService()) {
+        // Wait a bit and try one more time
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        if (!this.initService()) return null;
+      }
     }
 
     const request = {

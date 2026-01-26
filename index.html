@@ -54,24 +54,123 @@
     .bg-primary-light {
       background-color: rgba(121, 159, 12, 0.1);
     }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-fade-in {
+      animation: fadeIn 0.5s ease-out forwards;
+    }
+
+    /* Print utilities */
+    @media print {
+      @page {
+        margin: 1cm;
+        size: auto;
+      }
+
+      html,
+      body {
+        background-color: white !important;
+        width: 100% !important;
+        height: auto !important;
+        overflow: visible !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        display: block !important;
+      }
+
+      .min-h-screen,
+      main,
+      .container,
+      .animate-fade-in {
+        display: block !important;
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        position: static !important;
+        overflow: visible !important;
+        height: auto !important;
+        transform: none !important;
+        animation: none !important;
+        opacity: 1 !important;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      .print-only {
+        display: block !important;
+      }
+
+      /* PAGE BREAKS - The key fix */
+      .print-page-break {
+        display: block !important;
+        float: none !important;
+        clear: both !important;
+        position: relative !important;
+        break-before: page !important;
+        page-break-before: always !important;
+        margin-top: 0 !important;
+        padding-top: 2rem !important;
+      }
+
+      /* Ensure parent of page-break is also display: block */
+      .animate-fade-in {
+        display: block !important;
+      }
+
+      /* Ensure images and backgrounds show */
+      * {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      img {
+        max-width: 100% !important;
+        height: auto !important;
+        display: block !important;
+        break-inside: avoid !important;
+      }
+
+      .grid {
+        display: block !important;
+      }
+
+      .grid>* {
+        margin-bottom: 2rem !important;
+        break-inside: avoid !important;
+      }
+    }
   </style>
   <script type="importmap">
-{
-  "imports": {
-    "rxjs": "https://esm.sh/rxjs@^7.8.2?conditions=es2015",
-    "rxjs/operators": "https://esm.sh/rxjs@^7.8.2/operators?conditions=es2015",
-    "rxjs/ajax": "https://esm.sh/rxjs@^7.8.2/ajax?conditions=es2015",
-    "rxjs/webSocket": "https://esm.sh/rxjs@^7.8.2/webSocket?conditions=es2015",
-    "rxjs/testing": "https://esm.sh/rxjs@^7.8.2/testing?conditions=es2015",
-    "rxjs/fetch": "https://esm.sh/rxjs@^7.8.2/fetch?conditions=es2015",
-    "@angular/core": "https://esm.sh/@angular/core@^21.1.1?external=rxjs",
-    "@angular/platform-browser": "https://esm.sh/@angular/platform-browser@^21.1.1?external=rxjs",
-    "@angular/common": "https://esm.sh/@angular/common@^21.1.1?external=rxjs",
-    "@angular/compiler": "https://esm.sh/@angular/compiler@^21.1.1?external=rxjs"
+  {
+    "imports": {
+      "rxjs": "https://esm.sh/rxjs@^7.8.2?conditions=es2015",
+      "rxjs/operators": "https://esm.sh/rxjs@^7.8.2/operators?conditions=es2015",
+      "rxjs/ajax": "https://esm.sh/rxjs@^7.8.2/ajax?conditions=es2015",
+      "rxjs/webSocket": "https://esm.sh/rxjs@^7.8.2/webSocket?conditions=es2015",
+      "rxjs/testing": "https://esm.sh/rxjs@^7.8.2/testing?conditions=es2015",
+      "rxjs/fetch": "https://esm.sh/rxjs@^7.8.2/fetch?conditions=es2015",
+      "@angular/core": "https://esm.sh/@angular/core@^21.1.1?external=rxjs",
+      "@angular/platform-browser": "https://esm.sh/@angular/platform-browser@^21.1.1?external=rxjs",
+      "@angular/common": "https://esm.sh/@angular/common@^21.1.1?external=rxjs",
+      "@angular/compiler": "https://esm.sh/@angular/compiler@^21.1.1?external=rxjs"
+    }
   }
-}
-</script>
-  <link rel="stylesheet" href="/index.css">
+  </script>
 </head>
 
 <body>
