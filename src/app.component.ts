@@ -5,6 +5,8 @@ import { MenuGridComponent } from './components/menu-grid.component';
 import { IconComponent } from './components/icon.component';
 import { PlacesService } from './services/places.service';
 import { environment } from './environments/environment';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-root',
@@ -56,21 +58,79 @@ export class AppComponent {
 
   async exportToPdf() {
     this.isExporting.set(true);
-    this.cdr.detectChanges(); // Force Angular to render the hidden sections
-
-    // Wait for all images to be fetched in parallel
-    await this.fetchAllImages();
-    this.cdr.detectChanges(); // Update DOM with new image URLs
-
-    // Wait for all <img> tags to actually finish downloading/decoding
-    await this.waitForAllImagesToLoad();
-
-    // Tiny extra buffer for the OS print dialog
-    await new Promise(resolve => setTimeout(resolve, 500));
-
-    window.print();
-    this.isExporting.set(false);
     this.cdr.detectChanges();
+
+    // Wait for all images to be fetched
+    await this.fetchAllImages();
+    this.cdr.detectChanges();
+
+    // Wait for images to load
+    await this.waitForAllImagesToLoad();
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    try {
+      // Check if we're on mobile
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      
+      if (isMobile) {
+        // Use jsPDF for mobile devices
+        await this.generatePdfWithLibrary();
+      } else {
+        // Use window.print() for desktop
+        window.print();
+      }
+    } catch (error) {
+      console.error('PDF generation failed:', error);
+      // Fallback to print dialog
+      window.print();
+    } finally {
+      this.isExporting.set(false);
+      this.cdr.detectChanges();
+    }
+  }
+
+  private async generatePdfWithLibrary() {
+    const content = document.querySelector('main');
+    if (!content) return;
+
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    
+    // Get all sections to print
+    const sections = Array.from(content.querySelectorAll('.animate-fade-in, .print-index-page'));
+    
+    for (let i = 0; i < sections.length; i++) {
+      const section = sections[i] as HTMLElement;
+      
+      try {
+        // Capture section as canvas
+        const canvas = await html2canvas(section, {
+          scale: 2,
+          useCORS: true,
+          allowTaint: true,
+          backgroundColor: '#ffffff',
+          logging: false,
+        });
+
+        const imgData = canvas.toDataURL('image/jpeg', 0.8);
+        const imgWidth = pageWidth - 20; // 10mm margin on each side
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+        // Add new page if not first section
+        if (i > 0) {
+          pdf.addPage();
+        }
+
+        // Add image to PDF
+        pdf.addImage(imgData, 'JPEG', 10, 10, imgWidth, imgHeight);
+      } catch (error) {
+        console.error(`Error capturing section ${i}:`, error);
+      }
+    }
+
+    // Download the PDF
+    pdf.save(`Helens-Guidebook-${this.lang()}.pdf`);
   }
 
   private async waitForAllImagesToLoad() {

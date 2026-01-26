@@ -21,6 +21,10 @@
             "inlineStyleLanguage": "css",
             "styles": [
               "src/styles.css"
+            ],
+            "allowedCommonJsDependencies": [
+              "jspdf",
+              "html2canvas"
             ]
           },
           "configurations": {
