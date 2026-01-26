@@ -47,12 +47,19 @@
     <app-menu-grid [labels]="content().menu" (select)="setView($event)"></app-menu-grid>
     }
 
+    <!-- Menu as Index for PDF Export -->
+    @if (isExporting()) {
+    <div class="p-6 print-index-page">
+      <app-menu-grid [labels]="content().menu" [isPdfMode]="true" (select)="setView($event)"></app-menu-grid>
+    </div>
+    }
+
     <!-- Detail Views -->
     @if (isExporting() || view() !== 'home') {
     <div class="animate-fade-in">
       @for (v of (isExporting() ? ['welcome', 'directions', 'checkin', 'wifi', 'rules', 'guide', 'contact'] : [view()]);
       track v) {
-      <div [class.print-page-break]="isExporting()" [class.pb-10]="isExporting()" class="p-6">
+      <div [class.print-page-break]="isExporting()" [class.pb-10]="isExporting()" class="p-6" [id]="v">
 
         <!-- WELCOME VIEW -->
         @if (v === 'welcome') {
@@ -346,7 +353,7 @@
             <p class="text-gray-600 max-w-xs mx-auto text-sm">{{ content().sections.contact.text }}</p>
           </div>
           <a [href]="'https://wa.me/' + content().sections.contact.phone.replace(/[^0-9]/g, '')" target="_blank"
-            class="flex items-center gap-3 bg-[#25D366] text-white px-8 py-4 rounded-full font-bold text-lg shadow-lg hover:brightness-105 transition-all hover:scale-105 no-print">
+            class="flex items-center gap-3 bg-[#25D366] text-white px-8 py-4 rounded-full font-bold text-lg shadow-lg hover:brightness-105 transition-all hover:scale-105">
             <div class="w-6 h-6"><app-icon name="message-circle"></app-icon></div>
             WhatsApp Helen
           </a>
