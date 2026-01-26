@@ -9,7 +9,7 @@ const apiKey = environment.googleMapsApiKey || (window as any).__ENV__?.VITE_GOO
 console.log('API Key loaded:', apiKey ? 'YES (starts with ' + apiKey.substring(0, 4) + ')' : 'NO');
 if (apiKey) {
   const script = document.createElement('script');
-  script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
+  script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&loading=async`;
   script.async = true;
   script.defer = true;
   document.head.appendChild(script);
