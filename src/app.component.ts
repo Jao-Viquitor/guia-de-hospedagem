@@ -39,6 +39,14 @@ export class AppComponent {
 
   constructor() {
     console.log('Google Maps present?', typeof (window as any).google !== 'undefined');
+    
+    // Check URL for language parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const langParam = urlParams.get('lang');
+    if (langParam === 'es' || langParam === 'pt') {
+      this.lang.set(langParam);
+    }
+    
     // Effect to trigger image fetching when the guide view is active or exporting
     effect(() => {
       if (this.view() === 'guide' || this.isExporting()) {
@@ -49,6 +57,10 @@ export class AppComponent {
 
   setLang(l: 'pt' | 'es') {
     this.lang.set(l);
+    // Update URL without reload
+    const url = new URL(window.location.href);
+    url.searchParams.set('lang', l);
+    window.history.pushState({}, '', url);
   }
 
   setView(v: string) {

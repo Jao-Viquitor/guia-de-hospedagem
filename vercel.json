@@ -6,6 +6,14 @@
   "framework": null,
   "rewrites": [
     {
+      "source": "/pt",
+      "destination": "/pt.html"
+    },
+    {
+      "source": "/es",
+      "destination": "/es.html"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }

@@ -22,6 +22,18 @@
             "styles": [
               "src/styles.css"
             ],
+            "assets": [
+              {
+                "glob": "pt.html",
+                "input": "./",
+                "output": "/"
+              },
+              {
+                "glob": "es.html",
+                "input": "./",
+                "output": "/"
+              }
+            ],
             "allowedCommonJsDependencies": [
               "jspdf",
               "html2canvas"
