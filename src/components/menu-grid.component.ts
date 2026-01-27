@@ -7,7 +7,7 @@ import { IconComponent } from './icon.component';
   standalone: true,
   imports: [CommonModule, IconComponent],
   template: `
-    <div class="grid grid-cols-2 gap-6 p-4">
+    <div class="grid grid-cols-2 gap-6 p-4 max-w-md mx-auto">
       @if (isPdfMode()) {
         <a href="#welcome" class="flex flex-col items-center justify-center p-6 bg-white rounded-xl shadow-md border-b-4 border-primary hover:bg-slate-50 transition-all duration-200 aspect-square group">
           <div class="text-primary group-hover:scale-110 transition-transform duration-200">
