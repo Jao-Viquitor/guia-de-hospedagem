@@ -9,12 +9,14 @@
           {{ lang() === 'pt' ? 'Idioma' : 'Idioma' }}
         </span>
         <div class="flex gap-2">
-          <button (click)="setLang('pt')" class="px-3 py-1.5 text-xs font-bold rounded-full transition-colors border flex items-center gap-1.5"
+          <button (click)="setLang('pt')"
+            class="px-3 py-1.5 text-xs font-bold rounded-full transition-colors border flex items-center gap-1.5"
             [class]="lang() === 'pt' ? 'bg-primary text-white border-primary' : 'bg-transparent text-gray-400 border-gray-200'">
             <span class="text-base">🇧🇷</span>
             PT
           </button>
-          <button (click)="setLang('es')" class="px-3 py-1.5 text-xs font-bold rounded-full transition-colors border flex items-center gap-1.5"
+          <button (click)="setLang('es')"
+            class="px-3 py-1.5 text-xs font-bold rounded-full transition-colors border flex items-center gap-1.5"
             [class]="lang() === 'es' ? 'bg-primary text-white border-primary' : 'bg-transparent text-gray-400 border-gray-200'">
             <span class="text-base">🇪🇸</span>
             ES
@@ -43,7 +45,8 @@
     @if (view() === 'home') {
     <p class="text-gray-500 mt-2 text-sm uppercase tracking-widest">{{ content().subtitle }}</p>
     <!-- Animated instruction -->
-    <div class="mt-4 inline-flex items-center gap-2 bg-gradient-to-r from-primary to-primary/80 text-white px-6 py-3 rounded-full shadow-lg animate-gentle-bounce print:animate-none print:bg-primary print:shadow-none">
+    <div
+      class="mt-4 inline-flex items-center gap-2 bg-gradient-to-r from-primary to-primary/80 text-white px-6 py-3 rounded-full shadow-lg animate-gentle-bounce print:animate-none print:bg-primary print:shadow-none">
       <span class="font-bold text-sm">{{ content().menuInstruction }}</span>
     </div>
     }
@@ -60,7 +63,7 @@
   </div>
 
   <!-- Main Content Area -->
-  <main class="flex-grow container mx-auto max-w-lg">
+  <main class="flex-grow container mx-auto max-w-lg flex flex-col justify-center items-center">
     @if (!isExporting() && view() === 'home') {
     <app-menu-grid [labels]="content().menu" (select)="setView($event)"></app-menu-grid>
     }
@@ -83,23 +86,22 @@
         @if (v === 'welcome') {
         <div class="space-y-6">
           <!-- Interactive Map -->
-          <a [href]="content().sections.welcome.address.mapUrl" target="_blank" 
-             class="block relative rounded-2xl overflow-hidden shadow-xl aspect-video group">
+          <a [href]="content().sections.welcome.address.mapUrl" target="_blank"
+            class="block relative rounded-2xl overflow-hidden shadow-xl aspect-video group">
             <iframe
               [src]="'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3488.1!2d-57.0694273!3d-29.768509!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94535b00a2c02a73%3A0x151920a038381463!2sSantos%20Dumont%20Club%20Residence!5e0!3m2!1spt-BR!2sbr!4v1234567890' | safe: 'resourceUrl'"
-              width="100%"
-              height="100%"
-              style="border:0;"
-              allowfullscreen=""
-              loading="lazy"
+              width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
               referrerpolicy="no-referrer-when-downgrade"
               class="pointer-events-none group-hover:opacity-90 transition-opacity">
             </iframe>
-            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-6 pointer-events-none">
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-6 pointer-events-none">
               <h2 class="text-white font-serif text-2xl">{{ content().sections.welcome.title }}</h2>
             </div>
-            <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-2 rounded-full text-xs font-bold text-primary flex items-center gap-2 no-print">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <div
+              class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-2 rounded-full text-xs font-bold text-primary flex items-center gap-2 no-print">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
                 <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
                 <polyline points="15 3 21 3 21 9"></polyline>
                 <line x1="10" y1="14" x2="21" y2="3"></line>
@@ -109,7 +111,8 @@
           </a>
 
           <!-- Welcome Message -->
-          <div class="prose prose-stone text-gray-600 leading-relaxed bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+          <div
+            class="prose prose-stone text-gray-600 leading-relaxed bg-white p-6 rounded-xl shadow-sm border border-gray-100">
             <p>{{ content().sections.welcome.body }}</p>
           </div>
 
@@ -121,7 +124,8 @@
               <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
               <div class="absolute bottom-4 left-4 right-4">
                 <h3 class="font-bold text-white text-lg flex items-center gap-2 drop-shadow-lg">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2">
                     <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                     <circle cx="12" cy="10" r="3"></circle>
                   </svg>
@@ -129,14 +133,14 @@
                 </h3>
               </div>
             </div>
-            
+
             <div class="p-4 space-y-3">
               <div>
                 <p class="font-bold text-gray-800">{{ content().sections.welcome.address.name }}</p>
                 <p class="text-sm text-gray-600">{{ content().sections.welcome.address.street }}</p>
                 <p class="text-sm text-gray-600">{{ content().sections.welcome.address.city }}</p>
               </div>
-              
+
               <div class="pt-3 border-t border-gray-100">
                 <p class="text-xs font-bold text-gray-500 mb-3 uppercase">
                   {{ lang() === 'pt' ? 'Traçar rota com:' : 'Trazar ruta con:' }}
@@ -144,27 +148,29 @@
                 <div class="grid grid-cols-2 gap-2">
                   <!-- Google Maps -->
                   <a [href]="content().sections.welcome.address.googleMapsUrl" target="_blank"
-                     class="flex items-center gap-2 bg-blue-50 hover:bg-blue-100 text-blue-700 px-3 py-2 rounded-lg text-sm font-medium transition-colors">
+                    class="flex items-center gap-2 bg-blue-50 hover:bg-blue-100 text-blue-700 px-3 py-2 rounded-lg text-sm font-medium transition-colors">
                     <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                      <path
+                        d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
                     </svg>
                     Google Maps
                   </a>
 
                   <!-- Waze -->
                   <a [href]="content().sections.welcome.address.wazeUrl" target="_blank"
-                     class="flex items-center gap-2 bg-sky-50 hover:bg-sky-100 text-sky-700 px-3 py-2 rounded-lg text-sm font-medium transition-colors">
+                    class="flex items-center gap-2 bg-sky-50 hover:bg-sky-100 text-sky-700 px-3 py-2 rounded-lg text-sm font-medium transition-colors">
                     <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+                      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
                     </svg>
                     Waze
                   </a>
 
                   <!-- Apple Maps -->
                   <a [href]="content().sections.welcome.address.appleMapsUrl" target="_blank"
-                     class="flex items-center gap-2 bg-gray-50 hover:bg-gray-100 text-gray-700 px-3 py-2 rounded-lg text-sm font-medium transition-colors col-span-2">
+                    class="flex items-center gap-2 bg-gray-50 hover:bg-gray-100 text-gray-700 px-3 py-2 rounded-lg text-sm font-medium transition-colors col-span-2">
                     <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+                      <path
+                        d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
                     </svg>
                     Apple Maps
                   </a>
@@ -343,7 +349,8 @@
               <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
               <div class="absolute bottom-4 left-4 right-4">
                 <h3 class="font-bold text-white text-lg flex items-center gap-2 drop-shadow-lg">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2">
                     <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                     <circle cx="12" cy="10" r="3"></circle>
                   </svg>
@@ -351,14 +358,14 @@
                 </h3>
               </div>
             </div>
-            
+
             <div class="p-4 space-y-3">
               <div>
                 <p class="font-bold text-gray-800">{{ content().sections.welcome.address.name }}</p>
                 <p class="text-sm text-gray-600">{{ content().sections.welcome.address.street }}</p>
                 <p class="text-sm text-gray-600">{{ content().sections.welcome.address.city }}</p>
               </div>
-              
+
               <div class="pt-3 border-t border-gray-100">
                 <p class="text-xs font-bold text-gray-500 mb-3 uppercase">
                   {{ lang() === 'pt' ? 'Traçar rota com:' : 'Trazar ruta con:' }}
@@ -366,27 +373,29 @@
                 <div class="grid grid-cols-2 gap-2">
                   <!-- Google Maps -->
                   <a [href]="content().sections.welcome.address.googleMapsUrl" target="_blank"
-                     class="flex items-center gap-2 bg-blue-50 hover:bg-blue-100 text-blue-700 px-3 py-2 rounded-lg text-sm font-medium transition-colors">
+                    class="flex items-center gap-2 bg-blue-50 hover:bg-blue-100 text-blue-700 px-3 py-2 rounded-lg text-sm font-medium transition-colors">
                     <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                      <path
+                        d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
                     </svg>
                     Google Maps
                   </a>
 
                   <!-- Waze -->
                   <a [href]="content().sections.welcome.address.wazeUrl" target="_blank"
-                     class="flex items-center gap-2 bg-sky-50 hover:bg-sky-100 text-sky-700 px-3 py-2 rounded-lg text-sm font-medium transition-colors">
+                    class="flex items-center gap-2 bg-sky-50 hover:bg-sky-100 text-sky-700 px-3 py-2 rounded-lg text-sm font-medium transition-colors">
                     <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+                      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
                     </svg>
                     Waze
                   </a>
 
                   <!-- Apple Maps -->
                   <a [href]="content().sections.welcome.address.appleMapsUrl" target="_blank"
-                     class="flex items-center gap-2 bg-gray-50 hover:bg-gray-100 text-gray-700 px-3 py-2 rounded-lg text-sm font-medium transition-colors col-span-2">
+                    class="flex items-center gap-2 bg-gray-50 hover:bg-gray-100 text-gray-700 px-3 py-2 rounded-lg text-sm font-medium transition-colors col-span-2">
                     <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+                      <path
+                        d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
                     </svg>
                     Apple Maps
                   </a>
