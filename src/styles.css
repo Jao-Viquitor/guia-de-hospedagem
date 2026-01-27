@@ -23,7 +23,7 @@ h6,
 @media print {
   @page {
     margin: 1cm;
-    size: auto;
+    size: A4;
   }
 
   html,
@@ -125,6 +125,9 @@ h6,
     padding-top: 1rem !important;
     padding-bottom: 1rem !important;
     text-align: center !important;
+    background-color: white !important;
+    width: 100% !important;
+    display: block !important;
   }
 
   .print-only h1 {
@@ -135,6 +138,10 @@ h6,
   .print-only p {
     font-size: 0.75rem !important;
     margin-top: 0.25rem !important;
+  }
+  
+  .print-only .inline-flex {
+    display: inline-flex !important;
   }
 
   app-menu-grid .grid-cols-2 {
@@ -231,4 +238,142 @@ h6,
     break-inside: avoid !important;
     page-break-inside: avoid !important;
   }
+}
+
+/* Mobile PDF Export - Force visibility and proper layout */
+body.pdf-export-mode {
+  width: 794px !important;
+  max-width: 794px !important;
+  overflow-x: hidden !important;
+  background: white !important;
+}
+
+body.pdf-export-mode .print-only {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  height: auto !important;
+  text-align: center !important;
+  background-color: white !important;
+  padding: 2rem 1.5rem !important;
+}
+
+body.pdf-export-mode .print-only * {
+  display: revert !important;
+  visibility: visible !important;
+}
+
+body.pdf-export-mode .print-only .inline-flex {
+  display: inline-flex !important;
+}
+
+body.pdf-export-mode .no-print {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+body.pdf-export-mode main {
+  width: 794px !important;
+  max-width: 794px !important;
+  margin: 0 auto !important;
+}
+
+body.pdf-export-mode img {
+  max-width: 100% !important;
+  height: auto !important;
+  display: block !important;
+}
+
+body.pdf-export-mode .container {
+  width: 100% !important;
+  max-width: 794px !important;
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+}
+
+body.pdf-export-mode .hidden {
+  display: none !important;
+}
+
+body.pdf-export-mode .print-only.hidden {
+  display: block !important;
+}
+
+/* Temporary first page container styles */
+.pdf-first-page-container {
+  background: white !important;
+}
+
+.pdf-first-page-container .print-only,
+.pdf-first-page-container .hidden {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  text-align: center !important;
+}
+
+.pdf-first-page-container .inline-flex {
+  display: inline-flex !important;
+}
+
+/* PDF Mobile optimizations for Guide section */
+body.pdf-export-mode #guide {
+  padding: 1rem !important;
+}
+
+body.pdf-export-mode #guide .space-y-8 {
+  gap: 1rem !important;
+}
+
+body.pdf-export-mode #guide .space-y-6 {
+  gap: 0.75rem !important;
+}
+
+body.pdf-export-mode #guide .mb-4 {
+  margin-bottom: 0.5rem !important;
+}
+
+body.pdf-export-mode #guide .mb-8 {
+  margin-bottom: 1rem !important;
+}
+
+/* Reduce image heights in guide */
+body.pdf-export-mode #guide .h-48 {
+  height: 8rem !important;
+}
+
+body.pdf-export-mode #guide .h-32 {
+  height: 6rem !important;
+}
+
+/* Compact grid gaps */
+body.pdf-export-mode #guide .gap-4 {
+  gap: 0.5rem !important;
+}
+
+body.pdf-export-mode #guide .gap-8 {
+  gap: 1rem !important;
+}
+
+/* Compact padding */
+body.pdf-export-mode #guide .p-4 {
+  padding: 0.5rem !important;
+}
+
+body.pdf-export-mode #guide .p-6 {
+  padding: 0.75rem !important;
+}
+
+body.pdf-export-mode #guide section {
+  margin-bottom: 1rem !important;
+}
+
+/* Make address card more compact */
+body.pdf-export-mode #guide > div:first-child {
+  margin-bottom: 1rem !important;
+}
+
+/* Reduce spacing in small items (gas/coffee) */
+body.pdf-export-mode #guide .space-y-3 {
+  gap: 0.5rem !important;
 }
