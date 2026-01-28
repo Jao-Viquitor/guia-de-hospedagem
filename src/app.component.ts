@@ -39,14 +39,14 @@ export class AppComponent {
 
   constructor() {
     console.log('Google Maps present?', typeof (window as any).google !== 'undefined');
-    
+
     // Check URL for language parameter
     const urlParams = new URLSearchParams(window.location.search);
     const langParam = urlParams.get('lang');
     if (langParam === 'es' || langParam === 'pt') {
       this.lang.set(langParam);
     }
-    
+
     // Effect to trigger image fetching when the guide view is active or exporting
     effect(() => {
       if (this.view() === 'guide' || this.isExporting()) {
@@ -71,18 +71,18 @@ export class AppComponent {
   async exportToPdf() {
     try {
       this.pdfDownloadStatus.set('downloading');
-      
+
       const currentLang = this.lang();
-      const pdfFileName = currentLang === 'pt' 
-        ? "Helen's Guidebook - PT.pdf" 
-        : "Helen's Guidebook - ES.pdf";
+      const pdfFileName = currentLang === 'pt'
+        ? "Helen's Guidebook v2 - PT.pdf"
+        : "Helen's Guidebook v2 - ES.pdf";
       const pdfPath = `assets/${pdfFileName}`;
-      
+
       const response = await fetch(pdfPath);
       if (!response.ok) {
         throw new Error('Failed to fetch PDF');
       }
-      
+
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
@@ -92,17 +92,17 @@ export class AppComponent {
       link.click();
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
-      
+
       this.pdfDownloadStatus.set('success');
-      
+
       setTimeout(() => {
         this.pdfDownloadStatus.set('idle');
       }, 3000);
-      
+
     } catch (error) {
       console.error('PDF download failed:', error);
-      alert(this.lang() === 'pt' 
-        ? 'Erro ao baixar PDF. Por favor, tente novamente.' 
+      alert(this.lang() === 'pt'
+        ? 'Erro ao baixar PDF. Por favor, tente novamente.'
         : 'Error al descargar PDF. Por favor, inténtelo de nuevo.');
       this.pdfDownloadStatus.set('idle');
     }
@@ -111,11 +111,11 @@ export class AppComponent {
   async generatePdfFromWeb() {
     this.isExporting.set(true);
     this.cdr.detectChanges();
-    
+
     await new Promise(resolve => setTimeout(resolve, 100));
-    
+
     window.print();
-    
+
     this.isExporting.set(false);
     this.cdr.detectChanges();
   }
