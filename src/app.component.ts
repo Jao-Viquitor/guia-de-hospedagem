@@ -108,6 +108,18 @@ export class AppComponent {
     }
   }
 
+  async generatePdfFromWeb() {
+    this.isExporting.set(true);
+    this.cdr.detectChanges();
+    
+    await new Promise(resolve => setTimeout(resolve, 100));
+    
+    window.print();
+    
+    this.isExporting.set(false);
+    this.cdr.detectChanges();
+  }
+
   private async fetchAllImages(): Promise<void> {
     const currentContent = this.content();
     const categories = ['food', 'market', 'gas', 'coffee'] as const;
