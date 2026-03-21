@@ -3,6 +3,10 @@ import { bootstrapApplication } from '@angular/platform-browser';
 import { AppComponent } from './src/app.component';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { environment } from './src/environments/environment';
+import { inject as injectAnalytics } from '@vercel/analytics';
+
+// Initialize Vercel Analytics
+injectAnalytics();
 
 // Dynamically load Google Maps script using environment configuration
 const apiKey = environment.googleMapsApiKey || (window as any).__ENV__?.VITE_GOOGLE_MAPS_API_KEY || '';
